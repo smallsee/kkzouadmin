@@ -54,3 +54,50 @@ export function getTagList() {
     return Mock.mock(res.data);
   })
 }
+
+
+/**
+ * 上传视频数据
+ * @returns {*}
+ */
+export function postVideoList(formData) {
+  const url = 'http://rap.taobao.org/mockjs/17725/api/video/create?accessToken=aaa';
+
+  const data = Object.assign({}, {
+    format: 'json'
+  });
+
+  return axios({
+    method: 'post',
+    url: url,
+    data: formData,
+    params: data
+  }).then((res) => {
+
+    return Mock.mock(res.data);
+  })
+}
+
+
+/**
+ * 删除视频数据
+ * @returns {*}
+ */
+export function deleteVideo(id) {
+  const url = 'http://rap.taobao.org/mockjs/17725/api/video/delete?accessToken=aaa';
+
+  const data = Object.assign({}, {
+    format: 'json'
+  });
+
+  return axios({
+    method: 'post',
+    url: url,
+    data: {
+      id: id
+    },
+    params: data
+  }).then((res) => {
+    return Mock.mock(res.data);
+  })
+}

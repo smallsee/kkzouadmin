@@ -8,6 +8,7 @@
         <Form-item label="缩略图" prop="thumb">
 
             <div class="demo-upload-list" v-if="formValidate.thumb">
+
                     <img :src="formValidate.thumb">
                     <div class="demo-upload-list-cover">
                         <Icon type="ios-eye-outline" @click.native="handleView(formValidate.thumb)"></Icon>
@@ -106,30 +107,6 @@
             <Input v-model="formValidate.introduction" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入简介..."></Input>
         </Form-item>
 
-
-        <Form-item
-                v-for="(item, index) in formDynamic.items"
-                :key="index"
-                :prop="'items.' + index + '.value'"
-                :label="'视频文件' + (index + 1)"
-                :rules="{required: true, message: '视频文件' + (index + 1) +'不能为空', trigger: 'blur'}">
-            <Row>
-                <Col span="18">
-                <Input type="text" v-model="item.value" placeholder="请输入..."></Input>
-                </Col>
-                <Col span="4" offset="1">
-                <Button type="ghost" @click="filesRemove(index)">删除</Button>
-                </Col>
-            </Row>
-        </Form-item>
-        <Form-item>
-            <Row>
-                <Col span="12">
-                <Button type="dashed" long @click="filesAdd" icon="plus-round">新增</Button>
-                </Col>
-            </Row>
-        </Form-item>
-
         <Form-item>
             <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
             <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
@@ -150,13 +127,6 @@
         defaultList: [
 
         ],
-        formDynamic: {
-          items: [
-            {
-              value: ''
-            }
-          ]
-        },
         imgName: '',
         visible: false,
         //
@@ -177,13 +147,13 @@
           }
         ],
         formValidate: {
-          title: '',
-          thumb: '',
+          title: '小海',
+          thumb: 'http://dummyimage.com/640x640/f27986)',
           address: 'Japan',
           language: 'Japanese',
           issue_date: '',
           update_date: '',
-          akira: [],
+          akira: ['丁刚','夏娜'],
           tag: [],
           is_new: false,
           introduction: ''
@@ -227,14 +197,6 @@
       this._getTagList();
     },
     methods: {
-      filesAdd () {
-        this.formDynamic.items.push({
-          value: ''
-        });
-      },
-      filesRemove (index) {
-        this.formDynamic.items.splice(index, 1);
-      },
       //上传图片
       handleView (url) {
         this.imgName = url;

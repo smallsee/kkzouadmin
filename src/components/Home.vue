@@ -20,7 +20,7 @@
                             <Icon type="ios-navigate"></Icon>
                             {{item.name}}
                         </template>
-                        <Menu-item v-for="(child,mindex) in item.children" :name="child.index">
+                        <Menu-item v-for="(child,mindex) in item.children" :name="child.index" v-if="!child.hidden">
                             <router-link tag="div" class="tab-item" :to="child.path">
                                 <div  @click="writeBreand(item.name, child.name)">{{child.name}}</div>
                             </router-link>

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import {getVideoList} from 'api/video';
+  import {getVideoList, deleteVideo} from 'api/video';
   import {ERR_OK} from 'api/config';
 
   export default {
@@ -101,7 +101,7 @@
           {
             title: '操作',
             key: 'action',
-            width: 150,
+            width: 200,
             align: 'center',
             render: (h, params) => {
               return h('div', [
@@ -119,6 +119,20 @@
                     }
                   }
                 }, '查看'),
+                h('Button', {
+                  props: {
+                    type: 'info',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.update(params.index)
+                    }
+                  }
+                }, '修改'),
                 h('Button', {
                   props: {
                     type: 'error',
@@ -166,8 +180,18 @@
           content: `姓名：${this.data[index].name}<br>年龄：${this.data[index].age}<br>地址：${this.data[index].address}`
         })
       },
+      update (index) {
+        this.$router.push({ path: '/video/update'})
+      },
       remove (index) {
-        this.data.splice(index, 1);
+
+        deleteVideo(this.data[index].id).then((res) => {
+          if (res.errno == ERR_OK){
+            this.data.splice(index, 1);
+            this.$Message.success('成功删除!');
+          }
+
+        })
       },
       exportData (type) {
         if (type === 1) {
