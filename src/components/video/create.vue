@@ -108,25 +108,37 @@
 
 
         <Form-item
-                v-for="(item, index) in formDynamic.items"
+                v-for="(item, index) in formValidate.files.file"
                 :key="index"
-                :prop="'items.' + index + '.value'"
+                prop="files"
                 :label="'视频文件' + (index + 1)"
-                :rules="{required: true, message: '视频文件' + (index + 1) +'不能为空', trigger: 'blur'}">
+                :rules="{required: true, message: '视频文件' + (index + 1) +'的标题和url不能为空', trigger: 'blur'}">
+
             <Row>
-                <Col span="18">
-                <Input type="text" v-model="item.value" placeholder="请输入..."></Input>
-                </Col>
-                <Col span="4" offset="1">
+                <i-col span="9">
+                <Input type="text" v-model="item.title" placeholder="请输入文件名字...">
+                    <Icon type="document-text" slot="prepend"></Icon>
+                </Input>
+                </i-col>
+
+                <i-col span="9" offset="1">
+                    <Input type="text" v-model="item.url" placeholder="请输入文件Url,要附带http://...">
+                    <Icon type="earth" slot="prepend"></Icon>
+                    </Input>
+                </i-col>
+
+                <i-col span="3" offset="1">
                 <Button type="ghost" @click="filesRemove(index)">删除</Button>
-                </Col>
+                </i-col>
             </Row>
         </Form-item>
+
+
         <Form-item>
             <Row>
-                <Col span="12">
+                <i-col span="12">
                 <Button type="dashed" long @click="filesAdd" icon="plus-round">新增</Button>
-                </Col>
+                </i-col>
             </Row>
         </Form-item>
 
@@ -150,13 +162,6 @@
         defaultList: [
 
         ],
-        formDynamic: {
-          items: [
-            {
-              value: ''
-            }
-          ]
-        },
         imgName: '',
         visible: false,
         //
@@ -186,11 +191,22 @@
           akira: [],
           tag: [],
           is_new: false,
-          introduction: ''
+          introduction: '',
+          files: {
+            file: [
+              {
+                title: '',
+                url: ''
+              }
+            ]
+          },
         },
         ruleValidate: {
           title: [
             { required: true, message: '标题不能为空', trigger: 'blur' }
+          ],
+          files: [
+
           ],
           address: [
             { required: true, message: '请选择地区', trigger: 'change' }
@@ -228,12 +244,13 @@
     },
     methods: {
       filesAdd () {
-        this.formDynamic.items.push({
-          value: ''
+        this.formValidate.files.file.push({
+          title: '',
+          url: ''
         });
       },
       filesRemove (index) {
-        this.formDynamic.items.splice(index, 1);
+        this.formValidate.files.file.splice(index, 1);
       },
       //上传图片
       handleView (url) {
@@ -294,6 +311,7 @@
       handleSubmit (name) {
         let formData = this.formValidate;
         let _this = this;
+        console.log(formData);
         this.$refs[name].validate((valid) => {
           if (valid) {
             postVideoList(formData).then((res) => {
